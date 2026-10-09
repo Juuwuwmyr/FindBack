@@ -126,7 +126,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Expanded(child: Divider()),
                     ],
                   ),
-
                   const SizedBox(height: 16),
                   AppButton(
                     label: 'Create an Account',
