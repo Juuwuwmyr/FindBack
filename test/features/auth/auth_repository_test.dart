@@ -27,13 +27,13 @@ void main() {
 
     test('signIn throws AuthAppException on AuthException', () async {
       when(() => mockAuth.signInWithPassword(email: any(named:'email'), password: any(named:'password')))
-          .thenThrow(AuthException('Invalid credentials'));
+          .thenThrow(const AuthException('Invalid credentials'));
       expect(() => repo.signIn(email: 'a@b.com', password: 'wrong'), throwsA(isA<AuthAppException>()));
     });
 
     test('signUp throws AuthAppException on AuthException', () async {
       when(() => mockAuth.signUp(email: any(named:'email'), password: any(named:'password'), data: any(named:'data')))
-          .thenThrow(AuthException('Email already registered'));
+          .thenThrow(const AuthException('Email already registered'));
       expect(() => repo.signUp(email: 'a@b.com', password: 'pass1234', displayName: 'Test'), throwsA(isA<AuthAppException>()));
     });
   });

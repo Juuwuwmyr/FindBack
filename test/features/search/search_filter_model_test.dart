@@ -17,13 +17,13 @@ void main() {
     });
 
     test('copyWith clearType removes type', () {
-      final filter = const SearchFilterModel(type: ReportType.lost);
+      const filter = SearchFilterModel(type: ReportType.lost);
       final cleared = filter.copyWith(clearType: true);
       expect(cleared.type, isNull);
     });
 
     test('copyWith preserves other fields', () {
-      final filter = const SearchFilterModel(query: 'phone', type: ReportType.lost);
+      const filter = SearchFilterModel(query: 'phone', type: ReportType.lost);
       final updated = filter.copyWith(query: 'bag');
       expect(updated.query, 'bag');
       expect(updated.type, ReportType.lost);

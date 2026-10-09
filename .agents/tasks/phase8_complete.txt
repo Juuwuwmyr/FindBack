@@ -1,0 +1,30 @@
+Phase 8 STEP-D — Final Verification Report
+==========================================
+
+Total Dart files (lib/): 64
+
+Test count: 30 tests across 9 test files
+  test/features/auth/auth_repository_test.dart      (3 tests)
+  test/features/auth/login_screen_test.dart         (2 tests)
+  test/features/claims/claim_model_test.dart        (unit tests)
+  test/features/notifications/notification_model_test.dart (unit tests)
+  test/features/reports/feed_screen_test.dart       (1 test)
+  test/features/reports/item_report_model_test.dart (unit tests)
+  test/features/search/search_filter_model_test.dart (5 tests)
+  test/security/security_test.dart                  (5 tests)
+  test/widget_test.dart                             (1 test — App smoke test)
+
+flutter analyze result: No issues found! (0 errors, 0 warnings, 0 infos)
+
+flutter test result: All tests passed! (30 tests, exit code 0)
+
+Additional fixes applied in STEP-D:
+  - Fixed 5 prefer_const_* lint hints in test files (auth_repository_test, search_filter_model_test, security_test)
+  - Fixed pre-existing GoRouter assertion: StatefulShellBranch default location cannot be parameterised.
+    /profile/:userId moved outside the shell; shell branch now uses /my-profile (Consumer-based, reads currentUserIdProvider).
+    /profile/:userId kept as a standalone route for viewing other users' profiles.
+  - Removed unnecessary foundation.dart import from app_router.dart (covered by material.dart)
+
+Docs written:
+  README.md         — complete developer-facing README
+  docs/setup.md     — step-by-step setup guide (Supabase, migrations, Edge Functions, Auth webhook, Storage)

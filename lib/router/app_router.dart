@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -139,6 +139,15 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // Profile (other users) — outside shell
+      GoRoute(
+        path: '/profile/:userId',
+        builder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          return ProfileScreen(userId: userId);
+        },
+      ),
+
       // Moderation outside shell
       GoRoute(
         path: '/moderation',
@@ -178,10 +187,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/profile/:userId',
+                path: '/my-profile',
                 builder: (context, state) {
-                  final userId = state.pathParameters['userId']!;
-                  return ProfileScreen(userId: userId);
+                  // Read user ID synchronously; if missing the top-level redirect
+                  // will have already sent the user to /auth/login.
+                  return Consumer(
+                    builder: (context, ref, _) {
+                      final userId = ref.watch(currentUserIdProvider);
+                      if (userId == null) {
+                        return const Scaffold(
+                          body: Center(child: CircularProgressIndicator()),
+                        );
+                      }
+                      return ProfileScreen(userId: userId);
+                    },
+                  );
                 },
               ),
             ],

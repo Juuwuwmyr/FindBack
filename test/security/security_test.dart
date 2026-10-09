@@ -57,7 +57,7 @@ void main() {
 
   group('Security: Match score is not proof of ownership', () {
     test('score is a numeric value between 0 and 1', () {
-      final score = 0.73;
+      const score = 0.73;
       expect(score, greaterThanOrEqualTo(0.0));
       expect(score, lessThanOrEqualTo(1.0));
       expect(score > 0.45, true);
