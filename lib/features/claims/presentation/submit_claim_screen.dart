@@ -252,30 +252,28 @@ class _SubmitClaimScreenState extends ConsumerState<SubmitClaimScreen> {
               const SizedBox(height: 8),
 
               // 14. Contact preference radio buttons
-              Column(
-                children: [
-                  RadioListTile<ContactPreference>(
-                    contentPadding: EdgeInsets.zero,
-                    value: ContactPreference.inApp,
-                    groupValue: _contactPref,
-                    title: const Text('In-App Message'),
-                    onChanged: (v) => setState(() => _contactPref = v!),
-                  ),
-                  RadioListTile<ContactPreference>(
-                    contentPadding: EdgeInsets.zero,
-                    value: ContactPreference.email,
-                    groupValue: _contactPref,
-                    title: const Text('Email'),
-                    onChanged: (v) => setState(() => _contactPref = v!),
-                  ),
-                  RadioListTile<ContactPreference>(
-                    contentPadding: EdgeInsets.zero,
-                    value: ContactPreference.phone,
-                    groupValue: _contactPref,
-                    title: const Text('Phone'),
-                    onChanged: (v) => setState(() => _contactPref = v!),
-                  ),
-                ],
+              RadioGroup<ContactPreference>(
+                groupValue: _contactPref,
+                onChanged: (v) => setState(() => _contactPref = v!),
+                child: const Column(
+                  children: [
+                    RadioListTile<ContactPreference>(
+                      contentPadding: EdgeInsets.zero,
+                      value: ContactPreference.inApp,
+                      title: Text('In-App Message'),
+                    ),
+                    RadioListTile<ContactPreference>(
+                      contentPadding: EdgeInsets.zero,
+                      value: ContactPreference.email,
+                      title: Text('Email'),
+                    ),
+                    RadioListTile<ContactPreference>(
+                      contentPadding: EdgeInsets.zero,
+                      value: ContactPreference.phone,
+                      title: Text('Phone'),
+                    ),
+                  ],
+                ),
               ),
 
               // 15. Contact detail field (shown when not inApp)
