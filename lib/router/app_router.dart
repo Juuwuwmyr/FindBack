@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/domain/auth_provider.dart';
 import '../features/auth/domain/auth_state.dart';
+import '../features/profile/domain/profile_provider.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/register_screen.dart';
 import '../features/auth/presentation/forgot_password_screen.dart';
@@ -47,7 +48,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final authState = ref.read(authNotifierProvider).valueOrNull;
       final authenticated = authState?.isAuthenticated ?? false;
       final emailVerified = authState?.isEmailVerified ?? false;
-      const moderator = false; // wired in TASK-011
+      final moderator = ref.read(ownProfileProvider).valueOrNull?.isModerator ?? false;
       final location = state.matchedLocation;
 
       // Moderator-only routes

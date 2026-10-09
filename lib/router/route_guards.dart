@@ -1,17 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../features/auth/domain/auth_provider.dart';
+import '../features/profile/domain/profile_provider.dart';
 
 bool isAuthenticated(WidgetRef ref) {
-  final authState = ref.read(authNotifierProvider).valueOrNull;
-  return authState?.isAuthenticated ?? false;
+  return ref.read(authNotifierProvider).valueOrNull?.isAuthenticated ?? false;
 }
 
 bool isEmailVerified(WidgetRef ref) {
-  final authState = ref.read(authNotifierProvider).valueOrNull;
-  return authState?.isEmailVerified ?? false;
+  return ref.read(authNotifierProvider).valueOrNull?.isEmailVerified ?? false;
 }
 
 bool isModerator(WidgetRef ref) {
-  // Wired fully in TASK-011. Returns false for now.
-  return false;
+  return ref.read(ownProfileProvider).valueOrNull?.isModerator ?? false;
 }
