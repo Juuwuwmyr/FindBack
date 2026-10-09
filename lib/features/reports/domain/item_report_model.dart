@@ -26,6 +26,19 @@ extension ReportTypeExt on ReportType {
 
 extension ReportStatusExt on ReportStatus {
   String get dbValue => name.toUpperCase();
+  String get label {
+    switch (this) {
+      case ReportStatus.active:
+        return 'Active';
+      case ReportStatus.claimed:
+        return 'Claimed';
+      case ReportStatus.resolved:
+        return 'Resolved';
+      case ReportStatus.closed:
+        return 'Closed';
+    }
+  }
+
   static ReportStatus fromDb(String v) =>
       ReportStatus.values.firstWhere((e) => e.dbValue == v.toUpperCase());
 }
