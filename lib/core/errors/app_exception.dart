@@ -10,8 +10,8 @@ class NetworkException extends AppException {
   const NetworkException([super.message = 'Network error. Check your connection.']);
 }
 
-class AuthException extends AppException {
-  const AuthException([super.message = 'Authentication error.']);
+class AuthAppException extends AppException {
+  const AuthAppException([super.message = 'Authentication error.']);
 }
 
 class PermissionException extends AppException {
@@ -23,14 +23,14 @@ class ValidationException extends AppException {
   const ValidationException([super.message = 'Validation error.']);
 }
 
-class NotFoundException extends AppException {
-  const NotFoundException([super.message = 'The requested item was not found.']);
+class NotFoundAppException extends AppException {
+  const NotFoundAppException([super.message = 'The requested item was not found.']);
 }
 
 class ServerException extends AppException {
   const ServerException([super.message = 'An unexpected server error occurred.']);
 }
 
-class StorageException extends AppException {
-  const StorageException([super.message = 'Storage operation failed.']);
+class AppStorageException extends AppException {
+  const AppStorageException([super.message = 'Storage operation failed.']);
 }
