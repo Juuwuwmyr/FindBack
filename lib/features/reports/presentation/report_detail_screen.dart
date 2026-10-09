@@ -16,6 +16,7 @@ import '../domain/reports_provider.dart';
 import '../../matches/presentation/matches_section_widget.dart';
 import '../../claims/domain/claims_provider.dart';
 import '../../claims/domain/claim_model.dart';
+import '../../moderation/data/moderation_repository.dart';
 
 class ReportDetailScreen extends ConsumerWidget {
   const ReportDetailScreen({super.key, required this.id});
@@ -59,6 +60,71 @@ class _ReportDetailView extends ConsumerStatefulWidget {
 }
 
 class _ReportDetailViewState extends ConsumerState<_ReportDetailView> {
+  void _showFlagDialog(BuildContext context, WidgetRef ref) {
+    String reason = '';
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Flag this report'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              'Why are you flagging this report?',
+              style: TextStyle(fontSize: 14),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              decoration: const InputDecoration(
+                hintText: 'Describe the issue...',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
+              maxLength: 500,
+              onChanged: (v) => reason = v,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (reason.trim().isEmpty) return;
+              Navigator.pop(ctx);
+              try {
+                await ref
+                    .read(moderationRepositoryProvider)
+                    .submitFlag(
+                      targetType: 'report',
+                      targetId: widget.id,
+                      reason: reason.trim(),
+                    );
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Report flagged for review. Thank you.'),
+                  ),
+                );
+              } catch (e) {
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(e.toString()),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              }
+            },
+            child: const Text('Submit'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _closeReport() async {
     try {
       await ref.read(reportsRepositoryProvider).softDeleteReport(widget.id);
@@ -130,10 +196,7 @@ class _ReportDetailViewState extends ConsumerState<_ReportDetailView> {
                 ),
               IconButton(
                 icon: const Icon(Icons.flag_outlined),
-                onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content: Text('Flag feature coming soon')),
-                ),
+                onPressed: isAuthenticated ? () => _showFlagDialog(context, ref) : null,
               ),
             ],
             flexibleSpace: report.imageUrls.isNotEmpty
