@@ -13,6 +13,7 @@ import '../../auth/domain/auth_provider.dart';
 import '../data/reports_repository.dart';
 import '../domain/item_report_model.dart';
 import '../domain/reports_provider.dart';
+import '../../matches/presentation/matches_section_widget.dart';
 
 class ReportDetailScreen extends ConsumerWidget {
   const ReportDetailScreen({super.key, required this.id});
@@ -244,6 +245,11 @@ class _ReportDetailViewState extends ConsumerState<_ReportDetailView> {
                       ),
                     ],
                   ),
+                  if (isOwnReport && report.status == ReportStatus.active)
+                    MatchesSectionWidget(
+                      reportId: report.id,
+                      reportType: report.type,
+                    ),
                   const SizedBox(height: 100),
                 ],
               ),
