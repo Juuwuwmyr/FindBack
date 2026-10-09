@@ -1,0 +1,5 @@
+Phase 7 complete: Notifications + Moderation
+- STEP-A: SQL migrations and moderate-action Edge Function created
+- STEP-B: Notification model, repository, provider, screen, live badge on shell
+- STEP-C: Flag model, audit log model, moderation repository, provider, queue screen, flag report dialog
+- Final verification: flutter analyze zero errors
