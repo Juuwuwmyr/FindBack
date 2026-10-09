@@ -6,6 +6,8 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../domain/profile_provider.dart';
 import '../../auth/domain/auth_provider.dart';
+import '../../reports/domain/reports_provider.dart';
+import '../../reports/presentation/widgets/report_card.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key, required this.userId});
@@ -151,10 +153,23 @@ class ProfileScreen extends ConsumerWidget {
                   style: AppTextStyles.labelMedium,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Reports will appear here in Phase 4',
-                  style: AppTextStyles.bodySmall,
-                  textAlign: TextAlign.center,
+                ref.watch(reportsByUserProvider(userId)).when(
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (e, _) => const Center(
+                      child: Text('Could not load reports',
+                          style: AppTextStyles.bodySmall)),
+                  data: (reports) => reports.isEmpty
+                      ? const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(24),
+                            child: Text('No reports yet',
+                                style: AppTextStyles.bodySmall)))
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: reports.length,
+                          itemBuilder: (_, i) => ReportCard(report: reports[i]),
+                        ),
                 ),
               ],
             ),
