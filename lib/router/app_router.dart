@@ -18,6 +18,7 @@ import '../features/reports/presentation/edit_report_screen.dart';
 import '../features/search/presentation/search_screen.dart';
 import '../features/claims/presentation/submit_claim_screen.dart';
 import '../features/claims/presentation/claim_detail_screen.dart';
+import '../features/claims/presentation/claims_list_screen.dart';
 import '../features/notifications/presentation/notifications_screen.dart';
 import '../features/moderation/presentation/moderation_queue_screen.dart';
 import '../features/shell/main_shell.dart';
@@ -121,6 +122,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final reportId = state.pathParameters['reportId']!;
           return SubmitClaimScreen(reportId: reportId);
+        },
+      ),
+      GoRoute(
+        path: '/claims/list/:reportId',
+        builder: (context, state) {
+          final reportId = state.pathParameters['reportId']!;
+          return ClaimsListScreen(reportId: reportId);
         },
       ),
       GoRoute(

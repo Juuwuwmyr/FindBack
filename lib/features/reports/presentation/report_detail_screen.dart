@@ -14,6 +14,8 @@ import '../data/reports_repository.dart';
 import '../domain/item_report_model.dart';
 import '../domain/reports_provider.dart';
 import '../../matches/presentation/matches_section_widget.dart';
+import '../../claims/domain/claims_provider.dart';
+import '../../claims/domain/claim_model.dart';
 
 class ReportDetailScreen extends ConsumerWidget {
   const ReportDetailScreen({super.key, required this.id});
@@ -81,6 +83,8 @@ class _ReportDetailViewState extends ConsumerState<_ReportDetailView> {
     final isAuthenticated =
         ref.watch(authNotifierProvider).valueOrNull?.isAuthenticated ?? false;
     final isOwnReport = currentUserId == report.reporterId;
+    final myClaimAsync = ref.watch(myClaimForReportProvider(widget.id));
+    final myClaim = myClaimAsync.valueOrNull;
 
     return Scaffold(
       body: CustomScrollView(
@@ -258,7 +262,7 @@ class _ReportDetailViewState extends ConsumerState<_ReportDetailView> {
         ],
       ),
       bottomNavigationBar: _buildActionBar(
-          context, ref, report, isOwnReport, isAuthenticated),
+          context, ref, report, isOwnReport, isAuthenticated, myClaim),
     );
   }
 
@@ -268,12 +272,13 @@ class _ReportDetailViewState extends ConsumerState<_ReportDetailView> {
     ItemReportModel report,
     bool isOwnReport,
     bool isAuthenticated,
+    ClaimModel? myClaim,
   ) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: _actionBarContent(
-            context, ref, report, isOwnReport, isAuthenticated),
+            context, ref, report, isOwnReport, isAuthenticated, myClaim),
       ),
     );
   }
@@ -284,12 +289,11 @@ class _ReportDetailViewState extends ConsumerState<_ReportDetailView> {
     ItemReportModel report,
     bool isOwnReport,
     bool isAuthenticated,
+    ClaimModel? myClaim,
   ) {
     if (isOwnReport && report.status == ReportStatus.active) {
       return OutlinedButton(
-        onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Claims coming in Phase 6')),
-        ),
+        onPressed: () => context.push('/claims/list/${widget.id}'),
         style:
             OutlinedButton.styleFrom(minimumSize: const Size(double.infinity, 48)),
         child: const Text('View Claims'),
@@ -297,6 +301,12 @@ class _ReportDetailViewState extends ConsumerState<_ReportDetailView> {
     } else if (!isOwnReport &&
         report.status == ReportStatus.active &&
         isAuthenticated) {
+      if (myClaim != null) {
+        return AppButton(
+          label: 'View My Claim',
+          onPressed: () => context.push('/claims/${myClaim.id}'),
+        );
+      }
       return AppButton(
         label: 'Submit a Claim',
         onPressed: () =>
